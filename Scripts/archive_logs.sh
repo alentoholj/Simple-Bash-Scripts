@@ -7,7 +7,7 @@
 
 set -e
 
-hostdir="PATH_WHERE_YOU_WILL_CREATE_FOLDERS_AND_STORE_LOGS"
+hostdir="/home/carpel/Documents"
 hostname=$(hostname)
 
 function archive_logs() {
@@ -16,12 +16,12 @@ function archive_logs() {
     exp="$3"
 
     if [[ $(find "$path" -not -path '*/.*' -type f -name "$pattern" -mtime +"${exp}" -print | wc -l) -gt 0 ]]; then
-        find "$path" -not -path '*/.*' -type f -name "$pattern" -mtime +${exp} -print | xargs zstd --rm
+        find "$path" -not -path '*/.*' -type f -name "$pattern" -mtime +${exp} -print | sudo xargs zstd --rm
     fi
 
     for file in "$path"/*.zst; do
-        mkdir -p "$hostdir/$hostname/$(echo "$file" | grep -o '[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}' | tr - /)/$(basename ${path})"
-        mv "$file" "$hostdir/$hostname/$(echo "$file" | grep -o '[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}' | tr - /)/$(basename ${path})"
+        echo "sudo mkdir -p "$hostdir/$hostname/$(echo "$file" | cut -d _ -f3 | tr - /)/$(basename ${path})""
+        echo "sudo mv "$file" "$hostdir/$hostname/$(echo "$file" | cut -d _ -f3 | tr - /)/$(basename ${path})""
     done
 }
 
