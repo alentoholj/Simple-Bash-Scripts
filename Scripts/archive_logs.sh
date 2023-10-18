@@ -16,12 +16,12 @@ function archive_logs() {
     exp="$3"
 
     if [[ $(find "$path" -not -path '*/.*' -type f -name "$pattern" -mtime +"${exp}" -print | wc -l) -gt 0 ]]; then
-        find "$path" -not -path '*/.*' -type f -name "$pattern" -mtime +${exp} -print | sudo xargs zstd --rm
+        find "$path" -not -path '*/.*' -type f -name "$pattern" -mtime +${exp} -print | xargs zstd --rm
     fi
 
     for file in "$path"/*.zst; do
-        echo "sudo mkdir -p "$hostdir/$hostname/$(echo "$file" | cut -d _ -f3 | tr - /)/$(basename ${path})""
-        echo "sudo mv "$file" "$hostdir/$hostname/$(echo "$file" | cut -d _ -f3 | tr - /)/$(basename ${path})""
+        mkdir -p "$hostdir/$hostname/$(echo "$file" | cut -d _ -f3 | tr - /)/$(basename ${path})"
+        mv "$file" "$hostdir/$hostname/$(echo "$file" | cut -d _ -f3 | tr - /)/$(basename ${path})"
     done
 }
 
