@@ -7,7 +7,7 @@
 
 set -e
 
-hostdir="/home/carpel/Documents"
+hostdir="PATH_WHERE_YOU_WILL_CREATE_FOLDERS_AND_STORE_LOGS"
 hostname=$(hostname)
 
 function archive_logs() {
