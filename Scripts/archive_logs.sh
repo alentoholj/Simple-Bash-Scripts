@@ -8,7 +8,6 @@
 set -e
 
 hostdir="PATH_WHERE_YOU_WILL_CREATE_FOLDERS_AND_STORE_LOGS"
-hostname=$(hostname)
 
 function archive_logs() {
     path="$1"
@@ -20,8 +19,9 @@ function archive_logs() {
     fi
 
     for file in "$path"/*.zst; do
-        mkdir -p "$hostdir/$hostname/$(echo "$file" | cut -d _ -f3 | tr - /)/$(basename ${path})"
-        mv "$file" "$hostdir/$hostname/$(echo "$file" | cut -d _ -f3 | tr - /)/$(basename ${path})"
+        finaldir="$hostdir/$(hostname)/$(echo "$file" | cut -d _ -f3 | tr - /)"
+        mkdir -p "$finaldir"/$(basename ${path})
+        mv "$file" $finaldir/$(basename ${path})
     done
 }
 
